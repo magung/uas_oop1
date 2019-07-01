@@ -76,6 +76,7 @@ public class obat extends javax.swing.JFrame {
     kategori.setSelectedItem(tabel.getValueAt(rows,2).toString());
     harga.setText(tabel.getValueAt(rows,3).toString());
     stok.setText(tabel.getValueAt(rows,4).toString());
+    tidsupplier.setText(tabel.getValueAt(rows,5).toString());
     }
     
     public void clear(){
@@ -383,12 +384,26 @@ public class obat extends javax.swing.JFrame {
     private void tabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelMouseClicked
         // TODO add your handling code here:
         
+        
+        
         edit=true;
         
         posisi=tabel.getSelectedRow();
         idObat.setText(tabel.getValueAt(posisi, 1).toString());
         
         set_text(posisi);
+        try {
+            java.sql.Connection conn = koneksi.connect("apoteknusantara");
+            
+            //menampilkan nama supplier
+           
+            java.sql.ResultSet rsl = conn.createStatement().executeQuery("SELECT supplier.nama FROM supplier WHERE id_supplier = '"+ tidsupplier.getText() +"'");
+            while (rsl.next()) {
+                namasupplier.setSelectedItem(rsl.getString("nama").toString());
+            }
+            
+        } catch (SQLException sQLException) {
+        }
     }//GEN-LAST:event_tabelMouseClicked
 
     private void namasupplierActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_namasupplierActionPerformed

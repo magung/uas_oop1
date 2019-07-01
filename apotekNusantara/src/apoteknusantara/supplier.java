@@ -332,7 +332,8 @@ public class supplier extends javax.swing.JFrame {
         
         edit=true;
       
-      
+        posisi=tabel.getSelectedRow();
+        id.setText(tabel.getValueAt(posisi, 1).toString());
         set_text(posisi);
     }//GEN-LAST:event_tabelMouseClicked
 
