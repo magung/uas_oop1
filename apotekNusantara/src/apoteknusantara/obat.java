@@ -33,6 +33,22 @@ public class obat extends javax.swing.JFrame {
         posisi = 0;
         showData(null);
         idObat.setEditable(false);
+        
+        tidsupplier.setVisible(false);
+        
+        try {
+            java.sql.Connection conn = koneksi.connect("apoteknusantara");
+            
+            //menampilkan nama supplier
+           
+            java.sql.ResultSet rsl = conn.createStatement().executeQuery("select * from supplier");
+            while (rsl.next()) {
+                namasupplier.addItem(rsl.getString("nama"));
+            }
+            
+        } catch (SQLException sQLException) {
+        }
+        
     }
 
     void showData(String s){
@@ -54,15 +70,22 @@ public class obat extends javax.swing.JFrame {
      }
     
     private void set_text(int rows){
-         posisi=Integer.parseInt(tabel.getModel().getValueAt(rows, 0).toString());
+    posisi=Integer.parseInt(tabel.getModel().getValueAt(rows, 0).toString());
     idObat.setText(tabel.getValueAt(rows,0).toString());
-     
+    namaObat.setText(tabel.getValueAt(rows,1).toString());
+    kategori.setSelectedItem(tabel.getValueAt(rows,2).toString());
+    harga.setText(tabel.getValueAt(rows,3).toString());
+    stok.setText(tabel.getValueAt(rows,4).toString());
     }
     
     public void clear(){
     idObat.setText(null);
-   
+   namaObat.setText(null);
+   kategori.setSelectedIndex(0);
+   harga.setText(null);
+   stok.setText(null);
     cari.setText(null);
+    namasupplier.setSelectedIndex(0);
     edit = false;
     }
     /**
@@ -94,6 +117,7 @@ public class obat extends javax.swing.JFrame {
         stok = new javax.swing.JTextField();
         namaObat = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
+        tidsupplier = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -162,10 +186,17 @@ public class obat extends javax.swing.JFrame {
         kategori.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "-- pilih kategori --", "Kapsul", "Ampul", "Botol", "Sachet", "Tablet" }));
 
         namasupplier.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "-- pilih supplier --" }));
+        namasupplier.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                namasupplierActionPerformed(evt);
+            }
+        });
 
         jLabel6.setText("Stok");
 
         jLabel3.setText("nama");
+
+        tidsupplier.setText("id");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -199,9 +230,12 @@ public class obat extends javax.swing.JFrame {
                                     .addComponent(idObat, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(harga, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(kategori, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(namasupplier, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(stok, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(namaObat, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addComponent(namaObat, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(namasupplier, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(tidsupplier))))
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
@@ -213,26 +247,28 @@ public class obat extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(idObat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(namaObat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3))
-                .addGap(37, 37, 37)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(kategori, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(harga, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(stok, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel6))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel2)
-                    .addComponent(namasupplier, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(namasupplier, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(tidsupplier)))
                 .addGap(24, 24, 24)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(Add)
@@ -279,11 +315,13 @@ public class obat extends javax.swing.JFrame {
          }
         
         String sql;
+        
             if (edit == false) {
                 //simpan
-                sql = "insert into supplier (nama, alamat, telepon) values ('" + namasupplier.getText() + "', '" + alamat.getText() + "', '"+ harga.getText()+"')";
+                
+                sql = "insert into obat (nama, kategori, harga, stok, id_supplier) values ('" + namaObat.getText() + "', '" + kategori.getSelectedItem() + "', "+ harga.getText()+", "+stok.getText() +","+tidsupplier.getText()+")";
             } else {
-                sql = "update supplier set nama = '" + namasupplier.getText() + "', alamat = '" + alamat.getText()+"', telepon = '"+harga.getText() + "' where id_supplier = " + posisi;
+                sql = "update obat set nama = '" + namaObat.getText() + "', kategori = '" + kategori.getSelectedItem()+"', harga = "+harga.getText() + ", stok = "+ stok.getText() +", id_supplier = "+ tidsupplier.getText()+" where id_obat = " + posisi;
             }
         try {
             conn = (Connection) apoteknusantara.koneksi.connect(db);
@@ -302,7 +340,7 @@ public class obat extends javax.swing.JFrame {
         
                 if (posisi !=0){
         int response = JOptionPane.showConfirmDialog(this, 
-                    "Hapus "+ namasupplier.getText() + " ?",
+                    "Hapus "+ namaObat.getText() + " ?",
                     "Perhatian",
                     JOptionPane.YES_NO_OPTION,
                     JOptionPane.ERROR_MESSAGE);
@@ -313,7 +351,7 @@ public class obat extends javax.swing.JFrame {
 
                 try {
                     conn = (Connection) apoteknusantara.koneksi.connect(db);
-                    String sql ="delete from supplier where id_supplier =" + posisi;
+                    String sql ="delete from obat where id_obat =" + posisi;
                     PreparedStatement pst = conn.prepareStatement(sql);
                     pst.execute();
                     conn.close();
@@ -346,10 +384,32 @@ public class obat extends javax.swing.JFrame {
         // TODO add your handling code here:
         
         edit=true;
-      
-      
+        
+        posisi=tabel.getSelectedRow();
+        idObat.setText(tabel.getValueAt(posisi, 1).toString());
+        
         set_text(posisi);
     }//GEN-LAST:event_tabelMouseClicked
+
+    private void namasupplierActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_namasupplierActionPerformed
+        // TODO add your handling code here:
+        
+        
+        
+        
+        try {
+            java.sql.Connection conn = koneksi.connect("apoteknusantara");
+            
+            //menampilkan nama supplier
+           
+            java.sql.ResultSet rsl = conn.createStatement().executeQuery("SELECT supplier.id_supplier FROM supplier WHERE nama = '"+ namasupplier.getSelectedItem() +"'");
+            while (rsl.next()) {
+                tidsupplier.setText(rsl.getString("id_supplier"));
+            }
+            
+        } catch (SQLException sQLException) {
+        }
+    }//GEN-LAST:event_namasupplierActionPerformed
 
     /**
      * @param args the command line arguments
@@ -408,5 +468,6 @@ public class obat extends javax.swing.JFrame {
     private javax.swing.JComboBox namasupplier;
     private javax.swing.JTextField stok;
     private javax.swing.JTable tabel;
+    private javax.swing.JLabel tidsupplier;
     // End of variables declaration//GEN-END:variables
 }

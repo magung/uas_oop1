@@ -13,6 +13,9 @@ public class datasupplier {
     int id_supplier;
     String nama, alamat, telepon;
 
+    
+    
+    
     public datasupplier(int id_supplier, String nama, String alamat, String telepon) {
         this.id_supplier = id_supplier;
         this.nama = nama;
@@ -21,6 +24,8 @@ public class datasupplier {
     }
 
     public int getId_supplier() {
+        
+        
         return id_supplier;
     }
 
